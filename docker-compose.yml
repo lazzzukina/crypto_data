@@ -1,0 +1,30 @@
+volumes:
+  redis:
+    driver: local
+
+x-base: &base-backend
+  environment:
+    REDIS_URL: redis://redis:6379
+    DEBUG: "on"
+    ENVIRONMENT: development
+    ALLOWED_HOSTS: localhost,0.0.0.0
+  volumes:
+    - .:/code:delegated
+  depends_on:
+    - redis
+
+services:
+  redis:
+    image: library/redis:6.0
+    volumes:
+      - redis:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  backend:
+    <<: *base-backend
+    build: .
+    command: daphne -b 0.0.0.0 -p 8000 apps.asgi:application
+    ports:
+      - "8001:8000"
