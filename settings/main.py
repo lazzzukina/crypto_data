@@ -35,7 +35,7 @@ else:
 
 # Cacheops
 # https://github.com/Suor/django-cacheops
-CACHEOPS_REDIS = f'{env('REDIS_URL')}/1'
+CACHEOPS_REDIS = f"{env('REDIS_URL')}/1"
 CACHEOPS_DEFAULTS = {'timeout': 60 * 60}
 CACHEOPS = {
     'auth.user': {'ops': 'get', 'timeout': 60 * 15},
